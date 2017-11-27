@@ -48,7 +48,12 @@
         return this.count + 10;
       },
       ...mapState({
-        count: state => state.count,
+//        count: state => state.count,
+
+        count: function(state) {
+          // 使用mapState（遍历状态） 组件内的每一个属性函数都会获得一个默认参数state 然后通过state获取状态
+          return state.count;
+        }
       }),
     }
   };

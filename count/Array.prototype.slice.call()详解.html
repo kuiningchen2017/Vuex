@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  function test() { // 使用arguments获取实参对象 即使不定义形参也能读取到实参
+    // 让arguments类数组对象转换为真数组对象 使它有真数组的方法
+    console.log(arguments);
+    console.log(arguments instanceof Array); // false 伪数组
+    let arg = Array.prototype.slice.call(arguments);
+    alert(arg);
+    console.log(arg instanceof Array);
+  }
+  test('a', 'b', 'c', 'd');
+  /*
+  * 真正原理：
+  * Array.prototype.slice.call(arguments)能将具有length属性的对象转成数组
+  * */
+  let a = {
+    length: 2,
+    0: 'first',
+    1: 'second',
+  };  // 类数组 有length属性 长度为2 第0个使first 第1个使second
+  console.log(Array.prototype.slice.call(a));// ['first', 'second']
+
+  let b = {
+    0: 'first',
+    1: 'second'
+  };
+  console.log(Array.prototype.slice.call(b)); // [] 去掉length属性 返回一个空数组
+
+  let array1 = [1, 2, 3, 4];
+  console.log(array1.slice()); // 还是[1， 2， 3， 4] 不指定数组则全部截取
+
+  // 转换为数组的其他方法：
+  function toArray() {
+    let a = [];
+    // 遍历
+    for(let i = 0; i < arguments.length; i++){
+      a.push(arguments[i]);
+    }
+    return a;
+  }
+  toArray(1, 2, 3, 4);
+
+  // 通用转换
+  let toArr = function(s) {
+    try {
+      return Array.prototype.slice.call[s];
+    } catch(e) {
+      let arr = [];
+      for(let i = 0; i < s.length; i++){
+        arr[i] = s[i];
+      };
+      return arr;
+    };
+  };
+  toArr(a);
+</script>
+</body>
+</html>
